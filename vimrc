@@ -16,11 +16,23 @@ runtime! archlinux.vim
 
 " do not load defaults if ~/.vimrc is missing
 "let skip_defaults_vim=1
-
+set nocompatible
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set nu
+set incsearch
+set hlsearch
+nnoremap <silent> <F2> :nohls<cr>
+
+command WQ wq
+command Wq wq
+command W w
+command Q q
+command Qw wq
+" FILETYPE SPECIFIC SETTINGS
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yml setlocal ts=2 sts=2 sw=2 expandtab
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -29,47 +41,40 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-
-  Plug 'junegunn/limelight.vim'
+  Plug 'arcticicestudio/nord-vim'
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go' }
-  
-  if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins', 'for': 'go' }
-  else
-    Plug 'Shougo/deoplete.nvim', { 'for': 'go' }
-    Plug 'roxma/nvim-yarp', { 'for': 'go' }
-    Plug 'roxma/vim-hug-neovim-rpc', { 'for': 'go' }
-  endif
-  
+
+"  if has('nvim')
+"    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins', 'for': 'go' }
+"  else
+"    Plug 'Shougo/deoplete.nvim', { 'for': 'go' }
+"    Plug 'roxma/nvim-yarp', { 'for': 'go' }
+"    Plug 'roxma/vim-hug-neovim-rpc', { 'for': 'go' }
+"  endif
+
   Plug 'scrooloose/nerdtree'
   Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()
+syntax enable
+colorscheme nord
+highlight Comment cterm=italic
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+""""""""""""""""""""""""""""""""""""
+" NERD TREE SETTINGS AND SHORTCUTS "
+""""""""""""""""""""""""""""""""""""
+map <C-n> :NERDTreeToggle<CR>
+" Close when only file open is vim 
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Color name (:help cterm-colors) or ANSI code
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
-
-" Color name (:help gui-colors) or RGB color
-let g:limelight_conceal_guifg = 'DarkGray'
-let g:limelight_conceal_guifg = '#777777'
-
-" Default: 0.5
-let g:limelight_default_coefficient = 0.7
-
-" Number of preceding/following paragraphs to include (default: 0)
-let g:limelight_paragraph_span = 1
-
-" Beginning/end of paragraph
-"   When there's no empty line between the paragraphs
-"   and each paragraph starts with indentation
-let g:limelight_bop = '^\s'
-let g:limelight_eop = '\ze\n^\s'
-
-" Highlighting priority (default: 10)
-"   Set it to -1 not to overrule hlsearch
-let g:limelight_priority = -1
 
 " DEOPLETE OPTIONS
 let g:deoplete#enable_at_startup = 1
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+
