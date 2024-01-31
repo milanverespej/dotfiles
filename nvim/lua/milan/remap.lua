@@ -30,7 +30,8 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 --vim.keymap.set("n", "<leader>mr", "<cmd>terminal review<CR>")
 
 local MilanGroup = vim.api.nvim_create_augroup("Milan", {})
-vim.api.nvim_create_autocmd("LspAttach", {
+-- remove white spaces at the end before save
+vim.api.nvim_create_autocmd({"BufWritePre"}, {
 	group = MilanGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]]
