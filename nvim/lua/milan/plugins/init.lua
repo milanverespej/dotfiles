@@ -1,3 +1,4 @@
 return {
-    --    "google/vim-jsonnet"
+    "voldikss/vim-floaterm",
+    { "nmac427/guess-indent.nvim", opts = {} }
 }

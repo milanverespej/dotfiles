@@ -5,6 +5,6 @@ return {
         require("telescope").load_extension("git_worktree")
 
         vim.keymap.set("n", "<leader>gt", require("telescope").extensions.git_worktree.git_worktrees)
-        vim.keymap.set("n", "<leader>gt", require("telescope").extensions.git_worktree.create_git_worktree)
+        vim.keymap.set("n", "<leader>gct", require("telescope").extensions.git_worktree.create_git_worktree)
     end
 }

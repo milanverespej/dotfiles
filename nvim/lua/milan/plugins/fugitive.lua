@@ -1,26 +1,26 @@
 return {
     "tpope/vim-fugitive",
-    config = function ()
+    config = function()
         vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
         local Milan_Fugitive = vim.api.nvim_create_augroup("Milan_Fugitive", {})
         vim.api.nvim_create_autocmd("BufWinEnter", {
             group = Milan_Fugitive,
             pattern = "*",
-            callback = function ()
+            callback = function()
                 if vim.bo.ft ~= "fugitive" then
                     return
                 end
                 local bufnr = vim.api.nvim_get_current_buf()
-                local opts = {buffer = bufnr, remap = false}
-                vim.keymap.set("n", "<leader>r", function ()
-                    vim.cmd("Git rebase origin/master")
+                local opts = { buffer = bufnr, remap = false }
+                vim.keymap.set("n", "<leader>r", function()
+                    vim.cmd("Git rebase master")
                 end, opts)
-                vim.keymap.set("n", "<leader>ri", function ()
-                    vim.cmd("Git rebase -i origin/master")
+                vim.keymap.set("n", "<leader>ri", function()
+                    vim.cmd("Git rebase -i master")
                 end, opts)
                 vim.keymap.set("n", "<leader>f", function()
-                    vim.cmd("Git fetch -a")
+                    vim.cmd.Git("fetch -a")
                 end, opts)
                 vim.keymap.set("n", "<leader>p", function()
                     vim.cmd.Git("push")
@@ -31,7 +31,7 @@ return {
 
                 -- rebase always
                 vim.keymap.set("n", "<leader>P", function()
-                    vim.cmd("Git pull --rebase")
+                    vim.cmd.Git("pull --rebase")
                 end, opts)
             end
         }
